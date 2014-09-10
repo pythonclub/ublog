@@ -1,6 +1,19 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from taggit.managers import TaggableManager
+from taggit.models import TagBase, GenericTaggedItemBase
+
+
+class Tag(TagBase):
+
+    class Meta:
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
+
+
+class TaggedWhatever(GenericTaggedItemBase):
+    tag = models.ForeignKey(Tag,
+                            related_name="%(app_label)s_%(class)s_items")
 
 
 class EntryQueryset(models.QuerySet):
@@ -16,7 +29,7 @@ class Entry(models.Model):
     publish = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-    tags = TaggableManager()
+    tags = TaggableManager(through=TaggedWhatever)
 
     objects = EntryQueryset.as_manager()
 
