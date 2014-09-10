@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.urlresolvers import reverse
+from taggit.managers import TaggableManager
 
 
 class EntryQueryset(models.QuerySet):
@@ -14,8 +16,12 @@ class Entry(models.Model):
     publish = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+    tags = TaggableManager()
 
     objects = EntryQueryset.as_manager()
+
+    def get_absolute_url(self):
+        return reverse('blog:detail', kwargs={'slug': self.slug})
 
     def __unicode__(self):
         return self.title
