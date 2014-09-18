@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load django_markdown %}
+
+{% block entry_list %}
+<div class="blog-post">
+  <h2 class="blog-post-title">{{ entry.title }}</h2>
+  <p class="blog-post-meta">
+    {{ entry.created }} |
+    Tagged under  {{ entry.tags.slugs|join:", " }}
+  </p>
+  <div class="blog-post-body">
+    {{ entry.body|markdown }}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load django_markdown %}
+
+{% block entry_list %}
+{% for entry in object_list %}
+<div class="blog-post">
+  <h2 class="blog-post-title">{{ entry.title }}</h2>
+  <p class="blog-post-meta">
+    {{ entry.created }} |
+    Tagged under  {{ entry.tags.slugs|join:", " }}
+  </p>
+  <div class="blog-post-body">
+    {{ entry.body|markdown }}
+  </div>
+</div>
+{% endfor %}
+
+<ul class="pager">
+  <li><a href="#">Previous</a></li>
+  <li><a href="#">Next</a></li>
+</ul>
+{% endblock %}
